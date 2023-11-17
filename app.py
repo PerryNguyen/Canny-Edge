@@ -1,7 +1,6 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, request, url_for
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -9,41 +8,38 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/detect', methods=['POST'])
-def detect_edges():
-    image = request.files['image']
-    
-    img = cv2.imdecode(np.fromstring(image.read(), np.uint8), cv2.IMREAD_GRAYSCALE)
+@app.route('/compare', methods=['POST'])
+def compare_edge():
+    # Đọc hình ảnh gốc
+    img = cv2.imread('static/chim1.png')
 
-    lap = cv2.Laplacian(img, cv2.CV_64F, ksize=3)
+    # Áp dụng các thuật toán Canny, Sobel và Laplacian
+    canny1 = cv2.Canny(img, 100, 200)
+    cv2.imwrite('static/a.png', canny1)
 
-    lap = np. uint8(np.absolute (lap))
+    canny2 = cv2.Canny(img, 300, 400)
+    cv2.imwrite('static/b.png', canny2)
 
-    sobelX = cv2.Sobel(img, cv2.CV_64F, 1, 0)
+    sobel1x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+    cv2.imwrite('static/c.png', sobel1x)
 
-    sobelY = cv2.Sobel(img, cv2.CV_64F, 0, 1)
+    sobel1y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+    cv2.imwrite('static/d.png', sobel1y)
 
-    edges = cv2.Canny(img, 100, 200)
+    sobel2x = cv2.Sobel(img, cv2.CV_64F, 1, 2, ksize=3)
+    cv2.imwrite('static/e.png', sobel2x)
 
-    sobelX = np.uint8(np.absolute(sobelX))
+    sobel2y = cv2.Sobel(img, cv2.CV_64F, 2, 1, ksize=3)
+    cv2.imwrite('static/f.png', sobel2y)
 
-    sobelY = np.uint8(np.absolute(sobelY))
+    laplacian1 = cv2.Laplacian(img, cv2.CV_64F)
+    cv2.imwrite('static/g.png', laplacian1)
 
-    sobelCombined = cv2.bitwise_or(sobelX, sobelY)
+    laplacian2 = cv2.Laplacian(img, cv2.CV_64F, ksize=3)
+    cv2.imwrite('static/h.png', laplacian2)
 
-    cv2.imwrite('static/chim2.png', lap)
+    # Truyền các kết quả vào template để hiển thị
+    return render_template('result.html', canny1=canny1, canny2=canny2, sobel1x=sobel1x, sobel1y=sobel1y, sobel2x=sobel2x, sobel2y=sobel2y, laplacian1=laplacian1, laplacian2=laplacian2)
 
-    # cv2.imwrite('static/chim2.png', edges)
-
-    # cv2.imwrite('static/chim2.png', sobelX)
-
-    # cv2.imwrite('static/chim2.png', sobelY)
-
-    # cv2.imwrite('static/chim2.png', sobelCombined)
-
-
-    return render_template('result.html')
-
-
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)

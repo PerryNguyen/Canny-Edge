@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Result</title>
+    <title>Image Comparison Result</title>
 </head>
 <body>
-    <h1>Lap</h1>
-    <img src="{{ url_for('static', filename='chim2.png') }}" alt="Lap">
+    <h1>Image Comparison Result</h1>
+    <h2>Canny:</h2>
+    <img src="{{ url_for('static', filename='chim1.png') }}" alt="anh_goc" width="800" height="600">
+    <img src="{{ url_for('static', filename='a.png') }}" alt="canny1" width="800" height="600">
+    <img src="{{ url_for('static', filename='b.png') }}" alt="canny2" width="800" height="600">
+    <h2>Sobel:</h2>
+    <img src="{{ url_for('static', filename='chim1.png') }}" alt="anh_goc" width="800" height="600">
+    <img src="{{ url_for('static', filename='c.png') }}" alt="Sobel 1 X" width="800" height="600">
+    <img src="{{ url_for('static', filename='d.png') }}" alt="Sobel 1 Y" width="800" height="600">
+    <img src="{{ url_for('static', filename='e.png') }}" alt="Sobel 2 X" width="800" height="600">
+    <img src="{{ url_for('static', filename='f.png') }}" alt="Sobel 2 Y" width="800" height="600">
+    <h2>Laplacian:</h2>
+    <img src="{{ url_for('static', filename='chim1.png') }}" alt="anh_goc" width="800" height="600">
+    <img src="{{ url_for('static', filename='g.png') }}" alt="Laplacian 1" width="800" height="600">
+    <img src="{{ url_for('static', filename='h.png') }}" alt="Laplacian 2" width="800" height="600">
 </body>
 </html>
